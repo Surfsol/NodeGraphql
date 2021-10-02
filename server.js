@@ -4,19 +4,15 @@ const { ApolloServer } = require("apollo-server-express");
 const helmet = require("helmet");
 const typeDefs = require("./graphQL/schema");
 const resolvers = require("./graphQL/resolvers");
-const Traders = require("./models/model");
-const CatLabels = require('./models/graphLabels')
+const SqlData = require("./models/model");
 const cors = require("cors");
-const cron = require('./cron')
-const cronMarkets=require('./cronMarkets')
-
 
 const server = new ApolloServer({
   helmet,
   typeDefs,
   resolvers,
   context() {
-    return { Traders, Users, CatLabels };
+    return { SqlData };
   },
   introspection: true,
   playground: true
@@ -79,4 +75,4 @@ app.use(function catchAll(error, req, res, next) {
   });
 });
 
-export default app;
+module.exports = app;
