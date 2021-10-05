@@ -1,8 +1,22 @@
-const { gql } = require("apollo-server");
+const { gql } = require('apollo-server');
 
 const typeDefs = gql`
   scalar Date
   scalar JSON
+
+  type PetsData {
+    id: String
+    username: String
+    createdAt: String
+    name: String
+    type: String
+  }
+
+  input newPets{
+    name: String
+    type: String
+    createdAt: String
+  }
 
   type WeightedData {
     data_id: Int
@@ -12,11 +26,11 @@ const typeDefs = gql`
     data_value_id: Int
     index_position: Int
     created_date: Date
-    weight: Int
+    weight: Float
     month: Int
     year: Date
     sum: Float
-    value_name:String
+    value_name: String
   }
 
   type WeightedFiltered {
@@ -35,7 +49,7 @@ const typeDefs = gql`
     data_key: String
     data_value_id: Int
     created_date: Date
-    weight: Int
+    weight: Float
     month: Int
     year: Date
     sum: Float
@@ -68,8 +82,6 @@ const typeDefs = gql`
     created_date: Date
   }
 
-
-
   input newWeightedInput {
     data_id: Int
     cell_num_id: Int
@@ -93,9 +105,8 @@ const typeDefs = gql`
   type Query {
     weightedData(input: newWeightedInput): [WeightedData]!
     weightedFiltered(input: newWeightedFilteredInput): [WeightedFiltered]!
+    petsData(input: newPets): [PetsData]!
   }
-
-
 `;
 
 module.exports = typeDefs;

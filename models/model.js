@@ -2,6 +2,41 @@ const db = require("../dbConfig");
 const knexConfig = ("../knexfile")
 const knex = require("knex")(knexConfig);
 
+const nanoid = require('nanoid')
+// import {Low} from ('lowdb')
+// const FileSync = require('lowdb/adapters/FileSync')
+
+// const adapter = new FileSync('db/db.json')
+// const dbPet = low(adapter)
+
+const createPetModel = () => {
+  console.log('inside createPetModel')
+  return {
+    findMany(filter) {
+      return dbPet.get('pet')
+        .filter(filter)
+        .value()
+    },
+
+    findOne(filter) {
+      return dbPet.get('pet')
+        .find(filter)
+        .value()
+    },
+
+    create(pet) {
+      const newPet = {id: nanoid(), createdAt: Date.now(), ...pet}
+      
+      dbPet.get('pet')
+        .push(newPet)
+        .write()
+
+      return newPet
+    }
+  }
+}
+
+
 const getWeighted = () => {
     return db("databank_data").distinct("cell_num_id");
   };
@@ -142,3 +177,5 @@ const getWeighted = () => {
       .where("databank_data_keys.key_name", category)
       .groupBy("year", "month", "value_name");
   };
+
+module.exports = {createPetModel, getWeighted, getWeightedCategory, getWeightedFiltered}
